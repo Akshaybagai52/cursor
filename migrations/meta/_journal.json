@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1701946472822,
+      "tag": "0000_rich_whirlwind",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1701947081169,
+      "tag": "0001_dark_apocalypse",
+      "breakpoints": true
+    }
+  ]
+}
