@@ -10,8 +10,9 @@ import { twMerge } from 'tailwind-merge'
 import clsx from 'clsx'
 import CustomCard from '@/components/landing-page/custom-card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { CardTitle, CardDescription } from '@/components/ui/card'
+import { CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import Diamond from '../../../public/icons/diamond.svg'
+import CheckIcon from '../../../public/icons/check.svg'
 
 const HomePage = () => {
   return (
@@ -131,7 +132,7 @@ const HomePage = () => {
           {PRICING_CARDS.map(card => (
             <CustomCard
               className={clsx(
-                'w-[300px] rounded-2xl dark:bg-black/95 backdrop-blur-3xl relative',
+                'w-[300px] rounded-2xl dark:bg-black/40 backdrop-blur-3xl relative',
                 {
                   'border-brand-primaryPurple/70':
                     card.planType === PRICING_PLANS.proplan
@@ -149,15 +150,44 @@ const HomePage = () => {
                     top-0
                     '
                       >
-                        <Image 
-                          src={Diamond}
-                          alt="diamond"
-                          className='top-6 '
-                        />
+                        <Image src={Diamond} alt='diamond' className='top-6 ' />
                       </div>
                     </>
                   )}
+                  {card.planType}
                 </CardTitle>
+              }
+              cardContent={
+                <CardContent className='p-0'>
+                  <span className='font-normal text-2xl'>${card.price}</span>
+                  {+card.price > 0 ? (
+                    <span className='dark:text-washed-purple-800 ml-1'>
+                      /mo
+                    </span>
+                  ) : (
+                    ''
+                  )}
+                  <p className='dark:text-washed-purple-800'>
+                    {card.description}
+                  </p>
+                  <Button variant="btn-primary" className='whitespace-nowrap w-full mt-4'>
+                    {card.planType === PRICING_PLANS.proplan
+                      ? 'Go Pro'
+                      : 'Get Started'}
+                  </Button>
+                </CardContent>
+              }
+              cardFooter={
+                <ul className='font-normal flex mb-2 flex-col gap-4'>
+                  <small>
+                    {card.freatures.map(feature => (
+                      <li key={feature} className='flex items-center gap-2'>
+                        <Image src={CheckIcon} alt='check icon' />
+                        {feature}
+                      </li>
+                    ))}
+                  </small>
+                </ul>
               }
             ></CustomCard>
           ))}
