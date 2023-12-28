@@ -22,6 +22,8 @@ import { Button } from '@/components/ui/button'
 import Loader from '@/components/global/Loader'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { MailCheck } from 'lucide-react'
+import { FormSchema } from '@/lib/types'
+import { actionSignUpUser } from '@/lib/server-action/auth-actions'
 
 const SignUpFormSchema = z
   .object({
@@ -68,8 +70,14 @@ const Signup = () => {
   })
   const isLoading = form.formState.isSubmitting
 
-  const onSubmit = () => {}
-  const signUpHandler = () => {}
+  const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
+    const { error } = await actionSignUpUser({ email, password })
+    if (error) {
+      setSubmitError(error.message)
+      form.reset()
+      return
+    }
+  }
   return (
     <Form {...form}>
       <form
@@ -77,7 +85,7 @@ const Signup = () => {
           if (submitError) setSubmitError('')
         }}
         onSubmit={form.handleSubmit(onSubmit)}
-        className='w-full sm:justify-center sm-w-[400px] 
+        className='w-full sm:justify-center sm:w-[400px] 
                    space-y-6 flex flex-col '
       >
         <Link href='/' className='w-full flex justify-left items-center'>
@@ -95,7 +103,7 @@ const Signup = () => {
               disabled={isLoading}
               control={form.control}
               name='email'
-              render={field => (
+              render={({field}) => (
                 <FormItem>
                   <FormControl>
                     <Input type='email' placeholder='Email' {...field} />
@@ -108,7 +116,7 @@ const Signup = () => {
               disabled={isLoading}
               control={form.control}
               name='password'
-              render={field => (
+              render={({field})  => (
                 <FormItem>
                   <FormControl>
                     <Input type='password' placeholder='Password' {...field} />
@@ -121,7 +129,7 @@ const Signup = () => {
               disabled={isLoading}
               control={form.control}
               name='confirmPassword'
-              render={field => (
+              render={({field})  => (
                 <FormItem>
                   <FormControl>
                     <Input
@@ -156,7 +164,7 @@ const Signup = () => {
                 {codeExchangeError ? 'Invalid Link' : 'Check you email.'}
               </AlertTitle>
               <AlertDescription>
-                {codeExchangeError || "an Email confirmation has sent."}
+                {codeExchangeError || 'an Email confirmation has sent.'}
               </AlertDescription>
             </Alert>
           </>
